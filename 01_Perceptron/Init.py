@@ -5,7 +5,7 @@ from Perceptron import Perceptron
 
 def get_points(count, low, high):
     """Get array of 2d points in given range"""
-    return [np.array([x, y]) for x, y in zip(np.random.randint(low, high, count), np.random.randint(low, high, count))]
+    return [np.array([x, y]) for x, y in zip(np.random.uniform(low, high, count), np.random.uniform(low, high, count))]
 
 
 def plot_points(points, perceptron):

@@ -5,8 +5,9 @@ class Perceptron:
 
     def __init__(self, input_size, learning_rate=0.1):
         """Create perceptron with weights and bias randomly set between -1 and 1"""
-        self.weights = (np.random.rand(input_size) * 2) - 1
+        self.weights = np.random.uniform(-1, 1, input_size)
         self.bias = np.random.rand() * 2 - 1
+        print(self.bias)
         self.learning_rate = learning_rate
 
     def activation_function(self, x):
