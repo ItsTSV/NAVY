@@ -23,7 +23,11 @@ class ForestFire:
         self.board = np.zeros((board_size, board_size))
         self.tmp_board = np.zeros((board_size, board_size))
         self.initialize_board()
+
+        # Matplotlib settings
         plt.ion()
+        plt.axis("off")
+
 
     def initialize_board(self):
         """Initialize the board with trees and fire"""
@@ -80,9 +84,7 @@ class ForestFire:
             rgb_board[self.board == key] = color
 
         # Display the board; if it already exists, refresh
-        plt.figure(0)
         plt.imshow(rgb_board)
-        plt.axis("off")
         plt.show()
         plt.pause(0.25)
 
