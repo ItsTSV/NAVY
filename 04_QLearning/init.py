@@ -8,7 +8,7 @@ agent.train()
 
 # Test the agent
 agent.epsilon = 0
-env = gym.make("FrozenLake-v1", render_mode="rgb_array", is_slippery=False)
+env = gym.make("FrozenLake-v1", render_mode="human", is_slippery=False)
 state, _ = env.reset()
 done = False
 while not done:
