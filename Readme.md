@@ -1,6 +1,6 @@
 # NAVY
 V tomto repozitáři jsou uloženy tasky do předmětu NAVY. Každý task má svou vlastní složku, v níž se nachází spouštěcí
-soubor init.py, potřebné třídy a krátký tl;dr popis. Metody jsou v záhlaví vždy okomentovány, na řádcích jsou pak
+soubor main.py, potřebné třídy a krátký tl;dr popis. Metody jsou v záhlaví vždy okomentovány, na řádcích jsou pak
 náhodně rozházené další komenty podle potřeby. Jinak by kód (snad) měl být srozumitelný a samopopisný.
 
 # Používané technologie
