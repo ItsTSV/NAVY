@@ -5,12 +5,12 @@ class QLearningAgent:
     """Class that represents QLearning agent and its operations (step, epsilon based decision...)"""
 
     def __init__(
-            self,
-            env,
-            max_episodes,
-            epsilon_decay=0.005,
-            learning_rate=0.1,
-            gamma=0.95,
+        self,
+        env,
+        max_episodes,
+        epsilon_decay=0.005,
+        learning_rate=0.1,
+        gamma=0.95,
     ):
         """Initialize the agent, its memory and epsilon decay scheme
 
@@ -76,8 +76,13 @@ class QLearningAgent:
                 self.cumulative_reward += reward
 
                 # Update Q-table
-                self.q_table[state, action] = (self.q_table[state, action] + self.learning_rate * (
-                        reward + self.gamma * np.max(self.q_table[next_state]) - self.q_table[state, action]))
+                self.q_table[state, action] = self.q_table[
+                    state, action
+                ] + self.learning_rate * (
+                    reward
+                    + self.gamma * np.max(self.q_table[next_state])
+                    - self.q_table[state, action]
+                )
 
                 # Update state
                 state = next_state
