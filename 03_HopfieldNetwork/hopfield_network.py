@@ -15,7 +15,7 @@ class HopfieldNetwork:
         np.fill_diagonal(self.weights, 0)
 
     def update(self, pattern, mode="asynchronous"):
-        """Refresh neurons (bipolar mode)"""
+        """Refresh neurons by either async or sync mode"""
         pattern = pattern.flatten()
         if mode == "asynchronous":
             for i in range(len(pattern)):
@@ -27,7 +27,7 @@ class HopfieldNetwork:
         return pattern.reshape((5, 5))
 
     def recover(self, pattern, iterations=25, mode="asynchronous"):
-        """Recovers"""
+        """Recovers pattern by either async or sync mode"""
         for _ in range(iterations):
             pattern = self.update(pattern, mode=mode)
         return pattern
