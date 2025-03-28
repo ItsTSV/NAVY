@@ -37,6 +37,9 @@ class DQNAgent:
         # Environment
         self.env = env
 
+        # Network saving
+        self.best_reward = 0
+
     # epsilon-greedy action selection
     def epsilon_greedy_action(self, state, epsilon):
         """Based on epsilon. selects either random or best action"""
@@ -50,7 +53,7 @@ class DQNAgent:
 
     # Training function
     def advance(self, batch_size=64, gamma=0.99):
-        """"Performs one optimization step
+        """Performs one optimization step
 
             First, a batch is sampled from the memory. The data from is prepared to be fed into the NN.
             When that is done, the network will predict Q-values of current and next states.
@@ -99,7 +102,7 @@ class DQNAgent:
             state = torch.tensor([state], dtype=torch.float32)
             total_reward = 0
 
-            for _ in range(200):
+            for _ in range(500):
                 action = self.epsilon_greedy_action(state, epsilon)
                 next_state, reward, done, _, _ = self.env.step(action.item())
                 total_reward += reward
@@ -127,6 +130,12 @@ class DQNAgent:
             print(
                 f"Episode {episode}, Total Reward: {total_reward}, epsilon: {epsilon:.2f}"
             )
+
+            # Save the model if it is the best one so far
+            if total_reward > self.best_reward:
+                self.best_reward = total_reward
+                self.save_model()
+                print(f"\tThis is the best model so far, saving...")
 
         print("Training complete.")
         self.env.close()
