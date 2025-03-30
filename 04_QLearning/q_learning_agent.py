@@ -61,12 +61,15 @@ class QLearningAgent:
 
     def train(self):
         """Train the agent to play the game"""
+        kill_after = 256
         for episode in range(self.max_episodes):
+            # Reset environment
             state, _ = self.env.reset()
             done = False
 
             # Reset cumulative reward and step count
             self.cumulative_reward = 0
+            step_count = 0
 
             while not done:
                 action = self.epsilon_greedy_action(state)
@@ -86,6 +89,11 @@ class QLearningAgent:
 
                 # Update state
                 state = next_state
+
+                # Update step count, check if agent should be done
+                step_count += 1
+                if step_count > kill_after:
+                    break
 
             # Update epsilon
             self.decay_epsilon()
