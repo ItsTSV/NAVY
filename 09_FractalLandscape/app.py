@@ -1,5 +1,4 @@
 import tkinter as tk
-from math import sin, cos, radians
 import numpy as np
 
 
@@ -7,8 +6,12 @@ class LandscapeApp:
     """Graphical interface for generating 2D landscapes using fractal noise"""
 
     def __init__(self, root):
+        """Initializes tons of components and some colors"""
         self.root = root
         self.root.title("Landscape App")
+
+        self.canvas_width = 900
+        self.canvas_height = 900
 
         # Main layout
         self.frame_left = tk.Frame(root)
@@ -20,7 +23,9 @@ class LandscapeApp:
         # Left frame
         self.canvas = tk.Canvas(self.frame_left, width=900, height=900)
         self.canvas.pack()
-        self.canvas.create_rectangle(0, 0, 900, 900, fill="lightblue")
+        self.canvas.create_rectangle(
+            0, 0, self.canvas_width, self.canvas_height, fill="lightblue"
+        )
 
         self.start_x = tk.Entry(self.frame_right, width=10)
         self.start_x.insert(0, "0")
@@ -58,13 +63,16 @@ class LandscapeApp:
         self.offset_label = tk.Label(self.frame_right, text="Offset")
         self.offset_label.grid(row=5, column=0)
 
-        self.draw = tk.Button(self.frame_right, text="Draw", command=self._parse_and_draw)
+        self.draw = tk.Button(
+            self.frame_right, text="Draw", command=self._parse_and_draw
+        )
         self.draw.grid(row=6, column=0, columnspan=2)
 
         self.clear = tk.Button(self.frame_right, text="Clear", command=self._clear)
         self.clear.grid(row=7, column=0, columnspan=2)
 
     def _parse_and_draw(self):
+        """Parses infor from UI, execs the fractal draw"""
         start_x = int(self.start_x.get())
         start_y = int(self.start_y.get())
         end_x = int(self.end_x.get())
@@ -72,10 +80,10 @@ class LandscapeApp:
         iteration_count = int(self.iteration_count.get())
         offset = int(self.offset.get())
 
-        y = (start_y + end_y) / 2
         self._draw_fractal(start_x, start_y, end_x, end_y, iteration_count, offset)
 
     def _draw_fractal(self, start_x, start_y, end_x, end_y, iteration_count, offset):
+        """Reccursively splits the line; when recursion stops, draws polygons"""
         # Find line center and new y
         center_x = (start_x + end_x) / 2
         center_y = (start_y + end_y) / 2
@@ -83,13 +91,38 @@ class LandscapeApp:
 
         # Kill recursion
         if iteration_count == 1:
-            self.canvas.create_line(start_x, start_y, center_x, center_y, fill="black")
-            self.canvas.create_line(center_x, center_y, end_x, end_y, fill="black")
+            self.canvas.create_polygon(
+                start_x,
+                start_y,
+                center_x,
+                self.canvas_height,
+                (start_x, start_y),
+                (start_x, self.canvas_height),
+                (center_x, self.canvas_height),
+                (center_x, center_y),
+                fill="black",
+            )
+            self.canvas.create_polygon(
+                center_x,
+                center_y,
+                end_x,
+                self.canvas_height,
+                (center_x, center_y),
+                (center_x, self.canvas_height),
+                (end_x, self.canvas_height),
+                (end_x, end_y),
+                fill="black",
+            )
             return
 
         # Call recursively
-        self._draw_fractal(start_x, start_y, center_x, center_y, iteration_count - 1, offset)
-        self._draw_fractal(center_x, start_y, end_x, center_y, iteration_count - 1, offset)
+        self._draw_fractal(
+            start_x, start_y, center_x, center_y, iteration_count - 1, offset
+        )
+        self._draw_fractal(
+            center_x, center_y, end_x, end_y, iteration_count - 1, offset
+        )
 
     def _clear(self):
+        """Clears the canvas to original color"""
         self.canvas.create_rectangle(0, 0, 900, 900, fill="lightblue")

@@ -3,6 +3,7 @@ from math import sin, cos, radians
 
 
 def _parse_axiom(rule, axiom, nesting):
+    """Iteratively parses the axiom according to selected nesting"""
     for _ in range(nesting):
         parts = rule.split(" -> ")
         assert len(parts) == 2, "Not a valid rule! Use format Symbol -> Expand!"
@@ -15,6 +16,7 @@ class LSystemApp:
     """Graphical interface and pattern handling for Hopfield network"""
 
     def __init__(self, root):
+        """Initializes ton of components + some saved patterns"""
         self.root = root
         self.root.title("L-System App")
 
@@ -30,7 +32,6 @@ class LSystemApp:
         self.canvas.pack()
         self.canvas.create_rectangle(0, 0, 900, 900, fill="white")
 
-        # Right frame - controls -- Start X, Start Y, Starting Degree, Nesting count, Line length, Axiom, Rule, Draw button
         self.start_x = tk.Entry(self.frame_right, width=10)
         self.start_x.insert(0, "200")
         self.start_x.grid(row=0, column=1)
@@ -82,20 +83,27 @@ class LSystemApp:
         self.draw_button = tk.Button(self.frame_right, text="Draw", command=self._draw)
         self.draw_button.grid(row=8, column=0, columnspan=2)
 
-        self.reset_button = tk.Button(self.frame_right, text="Reset", command=self._reset)
+        self.reset_button = tk.Button(
+            self.frame_right, text="Reset", command=self._reset
+        )
         self.reset_button.grid(row=9, column=0, columnspan=2)
 
-        self.saved_button = tk.Button(self.frame_right, text="Cycle Saved", command=self._cycle_saved)
+        self.saved_button = tk.Button(
+            self.frame_right, text="Cycle Saved", command=self._cycle_saved
+        )
         self.saved_button.grid(row=10, column=0, columnspan=2)
 
         # Parts
         self.saved_index = 0
-        self.saved_patterns = [("F+F+F+F", "F -> F+F-F-FF+F+F-F", "90", "3", "5"),
-                               ("F++F++F", "F -> F+F--F+F", "60", "3", "15"),
-                               ("F", "F -> F[+F]F[-F]F", "25.7", "3", "18"),
-                               ("F", "F -> FF+[+F-F-F]-[-F+F+F]", "22.5", "3", "18")]
+        self.saved_patterns = [
+            ("F+F+F+F", "F -> F+F-F-FF+F+F-F", "90", "3", "5"),
+            ("F++F++F", "F -> F+F--F+F", "60", "3", "15"),
+            ("F", "F -> F[+F]F[-F]F", "25.7", "3", "18"),
+            ("F", "F -> FF+[+F-F-F]-[-F+F+F]", "22.5", "3", "18"),
+        ]
 
     def _draw(self):
+        """Collects inputs from user interface, parses the axiom and runs the algorithm"""
         start_x = int(self.start_x.get())
         start_y = int(self.start_y.get())
         start_degree = int(self.start_degree.get())
@@ -121,16 +129,16 @@ class LSystemApp:
         for symbol in axiom:
             if symbol == " ":
                 continue
-            elif symbol == "[":
+            elif symbol == "[":  # Remember position rule
                 checkpoints.append((pos_x, pos_y, angle))
-            elif symbol == "]":
+            elif symbol == "]":  # Recall rule
                 pos_x, pos_y, angle = checkpoints.pop()
                 print(pos_x, pos_y, angle)
-            elif symbol == "+":
+            elif symbol == "+":  # Turn rule
                 angle -= angle_change
-            elif symbol == "-":
+            elif symbol == "-":  # Turn rule
                 angle += angle_change
-            elif symbol in ["F", "b"]:
+            elif symbol in ["F", "b"]:  # Move, move and draw rules
                 angle_rad = radians(angle)
                 old_x = pos_x
                 old_y = pos_y
@@ -140,6 +148,7 @@ class LSystemApp:
                     self.canvas.create_line(old_x, old_y, pos_x, pos_y)
 
     def _reset(self):
+        """Resets the canvas content"""
         self.canvas.create_rectangle(0, 0, 900, 900, fill="white")
 
     def _cycle_saved(self):

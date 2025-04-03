@@ -1,5 +1,5 @@
-from app import LandscapeApp
 import tkinter as tk
+from app import LandscapeApp
 
 
 if __name__ == "__main__":

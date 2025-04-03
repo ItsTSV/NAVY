@@ -1,5 +1,5 @@
-from app import LSystemApp
 import tkinter as tk
+from app import LSystemApp
 
 
 if __name__ == "__main__":
