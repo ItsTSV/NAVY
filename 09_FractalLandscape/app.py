@@ -1,5 +1,6 @@
 import tkinter as tk
 import numpy as np
+from tkinter import colorchooser
 
 
 class LandscapeApp:
@@ -63,13 +64,20 @@ class LandscapeApp:
         self.offset_label = tk.Label(self.frame_right, text="Offset")
         self.offset_label.grid(row=5, column=0)
 
+        self.color_entry = tk.Entry(self.frame_right, width=10)
+        self.color_entry.insert(0, "#000000")
+        self.color_entry.grid(row=6, column=1)
+
+        self.color_button = tk.Button(self.frame_right, text="Pick Color", command=self._choose_color)
+        self.color_button.grid(row=7, column=0, columnspan=2)
+
         self.draw = tk.Button(
             self.frame_right, text="Draw", command=self._parse_and_draw
         )
-        self.draw.grid(row=6, column=0, columnspan=2)
+        self.draw.grid(row=8, column=0, columnspan=2)
 
         self.clear = tk.Button(self.frame_right, text="Clear", command=self._clear)
-        self.clear.grid(row=7, column=0, columnspan=2)
+        self.clear.grid(row=9, column=0, columnspan=2)
 
     def _parse_and_draw(self):
         """Parses infor from UI, execs the fractal draw"""
@@ -79,10 +87,11 @@ class LandscapeApp:
         end_y = int(self.end_y.get())
         iteration_count = int(self.iteration_count.get())
         offset = int(self.offset.get())
+        color = self.color_entry.get()
 
-        self._draw_fractal(start_x, start_y, end_x, end_y, iteration_count, offset)
+        self._draw_fractal(start_x, start_y, end_x, end_y, iteration_count, offset, color)
 
-    def _draw_fractal(self, start_x, start_y, end_x, end_y, iteration_count, offset):
+    def _draw_fractal(self, start_x, start_y, end_x, end_y, iteration_count, offset, color):
         """Reccursively splits the line; when recursion stops, draws polygons"""
         # Find line center and new y
         center_x = (start_x + end_x) / 2
@@ -100,7 +109,7 @@ class LandscapeApp:
                 (start_x, self.canvas_height),
                 (center_x, self.canvas_height),
                 (center_x, center_y),
-                fill="black",
+                fill=color,
             )
             self.canvas.create_polygon(
                 center_x,
@@ -111,18 +120,26 @@ class LandscapeApp:
                 (center_x, self.canvas_height),
                 (end_x, self.canvas_height),
                 (end_x, end_y),
-                fill="black",
+                fill=color,
             )
             return
 
         # Call recursively
         self._draw_fractal(
-            start_x, start_y, center_x, center_y, iteration_count - 1, offset
+            start_x, start_y, center_x, center_y, iteration_count - 1, offset, color
         )
         self._draw_fractal(
-            center_x, center_y, end_x, end_y, iteration_count - 1, offset
+            center_x, center_y, end_x, end_y, iteration_count - 1, offset, color
         )
 
     def _clear(self):
         """Clears the canvas to original color"""
-        self.canvas.create_rectangle(0, 0, 900, 900, fill="lightblue")
+        color = self.color_entry.get()
+        self.canvas.create_rectangle(0, 0, 900, 900, fill=color)
+
+    def _choose_color(self):
+        """Allows user to pick a color"""
+        color_code = colorchooser.askcolor(title="Choose color")[1]
+        if color_code:
+            self.color_entry.delete(0, tk.END)
+            self.color_entry.insert(0, color_code)
