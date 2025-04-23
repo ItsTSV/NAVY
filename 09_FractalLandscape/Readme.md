@@ -4,7 +4,8 @@ na principu půlení úsečky -- vybere se bod v půli úsečky, ten je posunut 
 se pak rozdělí a vybraný bod je použit jako začátek jedné a konec druhé části. Takto se postupuje rekurzivně, dokud
 nedosáhneme požadovaného počtu iterací. V poslední iteraci se pak vykreslí vytvořené polygony.
 
-Největším problémem bylo zjistit, jak fungují polygony v Tkinteru ;)
+Největším problémem bylo zjistit, jak fungují polygony v Tkinteru ;) Nepříliš intuitivní je též osa Y v Tkinteru: 0 
+je nahoře, na což je potřeba při nastavování Start Y a End Y myslet.
 
 ![Vysledek](../random_imgs/Landscape1.png)
 ![!Vysledek](../random_imgs/Landscape2.png)

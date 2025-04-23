@@ -1,6 +1,6 @@
 import tkinter as tk
-import numpy as np
 from tkinter import colorchooser
+import numpy as np
 
 
 class LandscapeApp:
