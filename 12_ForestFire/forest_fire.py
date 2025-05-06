@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import imageio
 
 
 class ForestFire:
@@ -27,7 +28,6 @@ class ForestFire:
         # Matplotlib settings
         plt.ion()
         plt.axis("off")
-
 
     def initialize_board(self):
         """Initialize the board with trees and fire"""
@@ -67,9 +67,9 @@ class ForestFire:
                 elif self.board[i, j] == 2:
                     self.tmp_board[i, j] = 0
 
-        self.board = self.tmp_board.copy()
+        self.board = self.tmp_board
 
-    def render_board(self):
+    def render_board(self, gif=False):
         """Copy board, convert colors and display it in matplotlib"""
         colors = {
             0: (40, 20, 40),
@@ -83,13 +83,30 @@ class ForestFire:
         for key, color in colors.items():
             rgb_board[self.board == key] = color
 
-        # Display the board; if it already exists, refresh
-        plt.imshow(rgb_board)
-        plt.show()
-        plt.pause(0.25)
+        # Either render the board in gif or in matplotlib
+        if gif:
+            rgb_board = np.kron(rgb_board, np.ones((3, 3, 1), dtype=np.uint8))
+        else:
+            plt.imshow(rgb_board)
+            plt.show()
+            plt.pause(0.25)
+
+        # Return board
+        return rgb_board
 
     def run_forest_fire(self):
         """Run the forest fire loop"""
         while True:
             self.render_board()
             self.update_board()
+
+    def run_with_gif(self, steps=240, gif_filename="forest_fire.gif"):
+        """Run simulation for N steps and save to GIF"""
+        frames = []
+        for _ in range(steps):
+            rgb_board = self.render_board(gif=True)
+            frames.append(rgb_board)
+            self.update_board()
+
+        imageio.mimsave(gif_filename, frames, fps=6)
+        print(f"GIF saved as '{gif_filename}'")
