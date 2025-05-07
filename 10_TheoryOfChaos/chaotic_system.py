@@ -78,7 +78,7 @@ class ChaoticSystem:
                 self.x_list.append(x)
                 self.prediction_list.append(self.add_chaotic_error(x, r))
 
-    def plot_results(self, filename="real_bifurcation_diagram.png"):
+    def plot_results(self, filename=None):
         """Plot the bifurcation diagram and the predicted values."""
         plt.figure(figsize=(12, 8))
 
@@ -99,5 +99,6 @@ class ChaoticSystem:
         plt.grid(True, linewidth=0.5, linestyle="dotted")
 
         plt.tight_layout()
-        plt.savefig(filename, dpi=100)
+        if filename is not None:
+            plt.savefig(filename, dpi=100)
         plt.show()

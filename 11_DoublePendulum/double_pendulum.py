@@ -47,6 +47,8 @@ class DoublePendulum:
         self.trace = None
         self.trace_mid = None
         self.time_text = None
+        self.velocity1 = None
+        self.velocity2 = None
         self.ani = None
 
     def derivatives(self, t, y):
@@ -129,6 +131,8 @@ class DoublePendulum:
         (self.trace,) = self.ax.plot([], [], "-", lw=1, color="blue", alpha=0.2)
         (self.trace_mid,) = self.ax.plot([], [], "-", lw=1, color="red", alpha=0.2)
         self.time_text = self.ax.text(0.02, 0.95, "", transform=self.ax.transAxes)
+        self.velocity1 = self.ax.text(0.02, 0.92, "", transform=self.ax.transAxes)
+        self.velocity2 = self.ax.text(0.02, 0.89, "", transform=self.ax.transAxes)
 
     def init_func(self):
         """Initialization function for animation."""
@@ -136,6 +140,8 @@ class DoublePendulum:
         self.trace.set_data([], [])
         self.trace_mid.set_data([], [])
         self.time_text.set_text("")
+        self.velocity1.set_text("")
+        self.velocity2.set_text("")
         return self.line, self.trace, self.trace_mid, self.time_text
 
     def update_func(self, frame):
@@ -148,7 +154,9 @@ class DoublePendulum:
         self.trace_mid.set_data(self.x1[: frame + 1], self.y1[: frame + 1])
 
         self.time_text.set_text(f"Time: {self.solution.t[frame]:.2f}s")
-        return self.line, self.trace, self.trace_mid, self.time_text
+        self.velocity1.set_text(f"Velocity 1: {self.solution.y[1][frame]:.2f}")
+        self.velocity2.set_text(f"Velocity 2: {self.solution.y[3][frame]:.2f}")
+        return self.line, self.trace, self.trace_mid, self.time_text, self.velocity1, self.velocity2
 
     def animate(self, interval=20):
         """Create and run the animation."""
