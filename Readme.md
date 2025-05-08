@@ -4,7 +4,7 @@ soubor main.py, potřebné třídy a krátký tl;dr popis. Metody jsou v záhlav
 náhodně rozházené další komenty podle potřeby. Jinak by kód (snad) měl být srozumitelný a samopopisný.
 
 # Používané technologie
-- Knihovny: `numpy`, `matplotlib`
+- Knihovny: `numpy`, `matplotlib`, `pytorch`, `gymnasium`
 - Formátování: `black`, `pylint`
 
 # Tasky
@@ -17,6 +17,6 @@ náhodně rozházené další komenty podle potřeby. Jinak by kód (snad) měl 
 - VII. IFS
 - VIII. TEA -- Mandelbrot set on Julia's set
 - IX. TEA -- Generation of 2D country using fractal geometry
-- X. TEA -- Theory of chaos: Logisttic map, chaotic numbers and their prediction
-- XI. KAM ZMIZEL TASK 11?
-- XII. Celklular automata -- forest fire algorithm
+- X. TEA -- Theory of chaos: Logistic map, chaotic numbers and their prediction
+- XI. Double Pendulum
+- XII. Cellular automata -- forest fire algorithm
